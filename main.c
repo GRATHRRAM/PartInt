@@ -1,16 +1,15 @@
 #include <stdlib.h>
 #include <raylib.h>
 #include <time.h>
-#include "src/data.h"
+#include "src/strc.h"
+#include "src/gravity.h"
 
-//debug
-#include <stdio.h>
-//!debug
 
-#define Screen_Resolution_X 500
+#define Screen_Resolution_X 1000
 #define Screen_Resolution_Y 800
+#define Scale 2
 
-void Random_Positions(Parts prts);
+void Random_Positions(Parts *prts);
 
 int main(void) {
   InitWindow(Screen_Resolution_X, Screen_Resolution_Y, "PartInt - Exemple");
@@ -18,11 +17,14 @@ int main(void) {
 
   srand(time(NULL));
 
-  Parts Particles = {0};
-  Data_AllocParts(Particles, 100); 
+  Parts Particles;
+  Particles.scale = Scale;
+  Strc_AllocParts(&Particles, 100000); 
+
+  Random_Positions(&Particles);
 
   for(size_t i = 0; i < Particles.size; ++i) {
-    Particles.particle[i].color = (Color){0,0,0,255};
+    Particles.particle[i].color = (Color){0,0,0,60};
     Particles.particle[i].mass = 1;
   }
 
@@ -32,24 +34,24 @@ int main(void) {
 
             ClearBackground(LIGHTGRAY);
 
-            for(size_t prt = 0; prt < Particles.size; ++prt) {
-              DrawPixel(Particles.particle[prt].x,
-              Particles.particle[prt].y,
-              Particles.particle[prt].color);
-              //DrawCircle(0,0,110,BLACK);
-            }
+            for(size_t prt = 0; prt < Particles.size; ++prt)
+              DrawRectangleV(Particles.particle[prt].Position, (Vector2){Particles.scale, Particles.scale}, Particles.particle[prt].color);
 
         EndDrawing();
+        Vector2 mouse = GetMousePosition();
+        Grav_Applay2Point(mouse.x, mouse.y, 10, &Particles);
+        //Grav_Applay2Point(Screen_Resolution_X /2, Screen_Resolution_Y/2, 10, &Particles);
+        Strc_MoveParts(&Particles, (Vector2){Screen_Resolution_X, Screen_Resolution_Y});
     }
 
   CloseWindow();
-  Data_FreeParts(Particles);
+  Strc_FreeParts(&Particles);
   return 0;
 }
 
-void Random_Positions(Parts prts) {
-  for(size_t i = 0; i < prts.size; ++i) {
-    prts.particle[i].x = rand() % Screen_Resolution_X;
-    prts.particle[i].y = rand() % Screen_Resolution_Y;
+void Random_Positions(Parts *prts) {
+  for(size_t i = 0; i < prts->size; ++i) {
+    prts->particle[i].Position.x = rand() % Screen_Resolution_X;
+    prts->particle[i].Position.y = rand() % Screen_Resolution_Y;
   }
 }
