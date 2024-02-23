@@ -4,6 +4,7 @@
 #include "strc.h"
 #include <stdint.h>
 
-void Grav_Applay2Point(uint16_t PointX, uint16_t PointY, float mass, Parts *Particles);
+void grav(Part *Part1, Part Part2);
+Vector2 normalize(Vector2 v);
 
 #endif // !GRAVITY_H

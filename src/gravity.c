@@ -1,31 +1,31 @@
 #define GRAVITY_IMPLEMENTATION
 #include "strc.h"
 #include <math.h>
+#define G 6.674e-11
 
-void Grav_Applay2Point(uint16_t PointX, uint16_t PointY, float mass, Parts *Particles);
-float getDist(Vector2 pos,Vector2 otherPos);
-Vector2 getNormal(Vector2 pos,Vector2 otherPos);
+void grav(Part *Part1, Part Part2);
+Vector2 normalize(Vector2 v);
 
-void Grav_Applay2Point(uint16_t PointX, uint16_t PointY, float mass, Parts *Particles) {
-    for(size_t i = 0; i < Particles->size; ++i) { 
-        float dist = fmax(getDist(Particles->particle[i].Position, (Vector2){PointX, PointY}), 1);
-        Vector2 normal = getNormal(Particles->particle[i].Position, (Vector2){PointX, PointY});
+void grav(Part *Part1, Part Part2) {
+    Vector2 forceDirection = (Vector2){Part1->Position.x - Part2.Position.x, Part1->Position.y - Part2.Position.y};
 
-        Particles->particle[i].Velocity.x -= (normal.x/dist) * 0.99;
-        Particles->particle[i].Velocity.y -= (normal.y/dist) * 0.99;
+    float distanceSquared = forceDirection.x * forceDirection.x + forceDirection.y * forceDirection.y;
+    float distance = sqrt(distanceSquared);
+
+    // Unikamy dzielenia przez zero
+    if (distance < 1.0f) {
+        distance = 1.0f;
     }
+
+    // Obliczanie siły grawitacyjnej zgodnie z prawem powszechnego ciążenia Newtona
+    float strength = (G * Part1->mass * Part2.mass) / (distanceSquared);
+    Vector2 force = (Vector2){normalize(forceDirection).x * strength, normalize(forceDirection).y * strength};
+    
+    Part1->Velocity.x += force.x;
+    Part1->Velocity.y += force.y;
 }
 
-float getDist(Vector2 pos,Vector2 otherPos) {
-    const float dx = pos.x - otherPos.x;
-    const float dy = pos.y - otherPos.y;
-    return sqrt((dx*dx) + (dy*dy));
-}
-
-Vector2 getNormal(Vector2 pos, Vector2 otherPos) {
-    float dist = getDist(pos,otherPos);
-    const float dx = pos.x - otherPos.x;
-    const float dy = pos.y - otherPos.y;
-    Vector2 normal = (Vector2){dx*(1/dist), dy*(1/dist)};
-    return normal;
+Vector2 normalize(Vector2 v) {
+  float len = sqrt(v.x * v.x + v.y * v.y); // obliczenie odeglosci
+  return (Vector2){v.x / len, v.y / len}; // vector do normalizacji
 }
