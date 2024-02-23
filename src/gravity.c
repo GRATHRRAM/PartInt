@@ -11,8 +11,8 @@ void grav(Part *Part1, Part Part2) {
 
     float dist = sqrt(fDirection.x * fDirection.x + fDirection.y * fDirection.y);
 
-    if (dist < 100.0) {
-        dist = 100.0;
+    if (dist < 200.0) {
+        dist = 200.0;
     }
 
     float strength = (G * Part1->mass * Part2.mass) / (dist * dist);
@@ -20,8 +20,8 @@ void grav(Part *Part1, Part Part2) {
 
     Vector2 force = (Vector2){nVec.x * strength, nVec.y * strength};
 
-    Part1->Velocity.x += force.x;
-    Part1->Velocity.y += force.y;
+    Part1->Velocity.x += force.x * 5.0;
+    Part1->Velocity.y += force.y * 5.0;
 }
 
 Vector2 normalize(Vector2 v) {

@@ -25,8 +25,8 @@ int main(void) {
   Random_Positions(&Particles);
 
   for(size_t i = 0; i < Particles.size; ++i) {
-    Particles.particle[i].color = (Color){0,0,0,60};
-    Particles.particle[i].mass = 10;
+    Particles.particle[i].color = (Color){0,0,0,128};
+    Particles.particle[i].mass = 1;
   }
   
 
@@ -42,7 +42,7 @@ int main(void) {
         EndDrawing();
         Vector2 mouse_pos = GetMousePosition();
         Part mouse;
-        mouse.mass = 50;
+        mouse.mass = 100;
         mouse.Position = mouse_pos;
         //Grav_Applay2Point(mouse.x, mouse.y, 10, &Particles);
         //Grav_Applay2Point(Screen_Resolution_X /2, Screen_Resolution_Y/2, 10, &Particles);
@@ -52,7 +52,7 @@ int main(void) {
         //grav(&Particles.particle[0], Particles.particle[1]);
         //grav(&Particles.particle[1], Particles.particle[0]);
 
-        Strc_MoveParts_Center(&Particles, (Vector2){Screen_Resolution_X, Screen_Resolution_Y}, mouse_pos);
+        Strc_MoveParts(&Particles, (Vector2){Screen_Resolution_X, Screen_Resolution_Y});
     }
 
   CloseWindow();

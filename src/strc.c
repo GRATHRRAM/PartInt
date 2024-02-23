@@ -21,7 +21,7 @@ typedef struct Parts {
 uint8_t Strc_AllocParts(Parts *Particles, size_t size);
 void Strc_FreeParts(Parts *Particles);
 
-void Strc_MoveParts_Center(Parts *Particles, Vector2 ScreenBorders, Vector2 Center);
+void Strc_MoveParts(Parts *Particles, Vector2 ScreenBorders);
 
 uint8_t Strc_AllocParts(Parts *Particles, size_t size) {
     Particles->particle = (Part*) calloc(size, sizeof(Part));
@@ -35,7 +35,7 @@ void Strc_FreeParts(Parts *Particles) {
     Particles->size = 0;
 }
 
-void Strc_MoveParts_Center(Parts *Particles, Vector2 ScreenBorders, Vector2 Center) {
+void Strc_MoveParts(Parts *Particles, Vector2 ScreenBorders) {
   for(size_t i = 0; i < Particles->size; ++i) {
     Particles->particle[i].Position.x += Particles->particle[i].Velocity.x; 
     Particles->particle[i].Position.y += Particles->particle[i].Velocity.y; 

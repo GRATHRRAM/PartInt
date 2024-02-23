@@ -22,6 +22,6 @@ typedef struct Parts {
 uint8_t Strc_AllocParts(Parts *Particles, size_t size);
 void Strc_FreeParts(Parts *Particles);
 
-void Strc_MoveParts_Center(Parts *Particles, Vector2 ScreenBorders, Vector2 Center);
+void Strc_MoveParts(Parts *Particles, Vector2 ScreenBorders);
 
 #endif //!DATA_H
