@@ -3,11 +3,12 @@
 #include <time.h>
 #include "src/strc.h"
 #include "src/gravity.h"
+#include <stdio.h>
 
 
 #define Screen_Resolution_X 1000
 #define Screen_Resolution_Y 800
-#define Scale 20
+#define Scale 2
 
 void Random_Positions(Parts *prts);
 
@@ -19,31 +20,39 @@ int main(void) {
 
   Parts Particles;
   Particles.scale = Scale;
-  Strc_AllocParts(&Particles, 2); 
+  Strc_AllocParts(&Particles, 10000);
 
   Random_Positions(&Particles);
 
   for(size_t i = 0; i < Particles.size; ++i) {
     Particles.particle[i].color = (Color){0,0,0,60};
-    Particles.particle[i].mass = 20;
+    Particles.particle[i].mass = 10;
   }
+  
 
     while (!WindowShouldClose())
     {
         BeginDrawing();
 
-            ClearBackground(LIGHTGRAY);
+            ClearBackground(GRAY);
 
             for(size_t prt = 0; prt < Particles.size; ++prt)
               DrawRectangleV(Particles.particle[prt].Position, (Vector2){Particles.scale, Particles.scale}, Particles.particle[prt].color);
 
         EndDrawing();
-        Vector2 mouse = GetMousePosition();
+        Vector2 mouse_pos = GetMousePosition();
+        Part mouse;
+        mouse.mass = 20;
+        mouse.Position = mouse_pos;
         //Grav_Applay2Point(mouse.x, mouse.y, 10, &Particles);
         //Grav_Applay2Point(Screen_Resolution_X /2, Screen_Resolution_Y/2, 10, &Particles);
-        grav(&Particles.particle[0], Particles.particle[1]);
-        grav(&Particles.particle[1], Particles.particle[0]);
-        Strc_MoveParts(&Particles, (Vector2){Screen_Resolution_X, Screen_Resolution_Y});
+        for(size_t i = 0; i < Particles.size; ++i) {
+          grav(&Particles.particle[i], mouse);
+        }
+        //grav(&Particles.particle[0], Particles.particle[1]);
+        //grav(&Particles.particle[1], Particles.particle[0]);
+
+        Strc_MoveParts_Center(&Particles, (Vector2){Screen_Resolution_X, Screen_Resolution_Y}, mouse_pos);
     }
 
   CloseWindow();

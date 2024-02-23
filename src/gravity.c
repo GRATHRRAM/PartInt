@@ -1,31 +1,30 @@
 #define GRAVITY_IMPLEMENTATION
 #include "strc.h"
 #include <math.h>
-#define G 6.674
+#define G 0.5
 
 void grav(Part *Part1, Part Part2);
 Vector2 normalize(Vector2 v);
 
 void grav(Part *Part1, Part Part2) {
-    Vector2 forceDirection = (Vector2){Part1->Position.x - Part2.Position.x, Part1->Position.y - Part2.Position.y};
+    Vector2 fDirection = (Vector2){Part2.Position.x - Part1->Position.x, Part2.Position.y - Part1->Position.y};
 
-    float distanceSquared = forceDirection.x * forceDirection.x + forceDirection.y * forceDirection.y;
-    float distance = sqrt(distanceSquared);
+    float dist = sqrt(fDirection.x * fDirection.x + fDirection.y * fDirection.y);
 
-    // Unikamy dzielenia przez zero
-    if (distance < 1.0f) {
-        distance = 1.0f;
+    if (dist < 100.0) {
+        dist = 100.0;
     }
 
-    // Obliczanie siły grawitacyjnej zgodnie z prawem powszechnego ciążenia Newtona
-    float strength = (G * Part1->mass * Part2.mass) / (distanceSquared);
-    Vector2 force = (Vector2){normalize(forceDirection).x * strength, normalize(forceDirection).y * strength};
-    
-    Part1->Velocity.x += force.x * -1;
-    Part1->Velocity.y += force.y * -1;
+    float strength = (G * Part1->mass * Part2.mass) / (dist * dist);
+    Vector2 nVec = normalize(fDirection);
+
+    Vector2 force = (Vector2){nVec.x * strength, nVec.y * strength};
+
+    Part1->Velocity.x += force.x;
+    Part1->Velocity.y += force.y;
 }
 
 Vector2 normalize(Vector2 v) {
-  float len = sqrt(v.x * v.x + v.y * v.y); // obliczenie odeglosci
-  return (Vector2){v.x / len, v.y / len}; // vector do normalizacji
+  float len = sqrt(v.x * v.x + v.y * v.y);
+  return (Vector2){v.x / len, v.y / len};
 }

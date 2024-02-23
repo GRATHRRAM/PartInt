@@ -1,5 +1,5 @@
 COMPILER=cc
-FLAGS=-O3 -Wall -Wextra -g
+FLAGS= -Wall -Wextra -g
 libs_dep=libstrc.a libgravity.a
 libs_arg=-lstrc -lgravity
 
