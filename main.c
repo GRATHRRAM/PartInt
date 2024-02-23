@@ -25,7 +25,7 @@ int main(void) {
 
   for(size_t i = 0; i < Particles.size; ++i) {
     Particles.particle[i].color = (Color){0,0,0,60};
-    Particles.particle[i].mass = 1000000;
+    Particles.particle[i].mass = 20;
   }
 
     while (!WindowShouldClose())
@@ -42,6 +42,7 @@ int main(void) {
         //Grav_Applay2Point(mouse.x, mouse.y, 10, &Particles);
         //Grav_Applay2Point(Screen_Resolution_X /2, Screen_Resolution_Y/2, 10, &Particles);
         grav(&Particles.particle[0], Particles.particle[1]);
+        grav(&Particles.particle[1], Particles.particle[0]);
         Strc_MoveParts(&Particles, (Vector2){Screen_Resolution_X, Screen_Resolution_Y});
     }
 

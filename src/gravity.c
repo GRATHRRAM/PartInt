@@ -1,7 +1,7 @@
 #define GRAVITY_IMPLEMENTATION
 #include "strc.h"
 #include <math.h>
-#define G 6.674e-11
+#define G 6.674
 
 void grav(Part *Part1, Part Part2);
 Vector2 normalize(Vector2 v);
@@ -21,8 +21,8 @@ void grav(Part *Part1, Part Part2) {
     float strength = (G * Part1->mass * Part2.mass) / (distanceSquared);
     Vector2 force = (Vector2){normalize(forceDirection).x * strength, normalize(forceDirection).y * strength};
     
-    Part1->Velocity.x += force.x;
-    Part1->Velocity.y += force.y;
+    Part1->Velocity.x += force.x * -1;
+    Part1->Velocity.y += force.y * -1;
 }
 
 Vector2 normalize(Vector2 v) {
