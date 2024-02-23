@@ -20,7 +20,7 @@ int main(void) {
 
   Parts Particles;
   Particles.scale = Scale;
-  Strc_AllocParts(&Particles, 10000);
+  Strc_AllocParts(&Particles, 100000);
 
   Random_Positions(&Particles);
 
@@ -42,7 +42,7 @@ int main(void) {
         EndDrawing();
         Vector2 mouse_pos = GetMousePosition();
         Part mouse;
-        mouse.mass = 20;
+        mouse.mass = 50;
         mouse.Position = mouse_pos;
         //Grav_Applay2Point(mouse.x, mouse.y, 10, &Particles);
         //Grav_Applay2Point(Screen_Resolution_X /2, Screen_Resolution_Y/2, 10, &Particles);
